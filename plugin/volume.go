@@ -144,22 +144,27 @@ func (v *Volume) Mount(r volume.Request) volume.Response {
 
 	config, err := v.createDiskConfig(r)
 	if err != nil {
+		log15.Error("Error in createDiskConfig")
 		return buildReponseError(err)
 	}
 
 	if err := v.createMountPoint(config); err != nil {
+		log15.Error("Error in createMountPoint")
 		return buildReponseError(err)
 	}
 
 	if err := v.p.Attach(config); err != nil {
+		log15.Error("Error in Attach")
 		return buildReponseError(err)
 	}
 
 	if err := v.fs.Format(config.Dev()); err != nil {
+		log15.Error("Error in Format")
 		return buildReponseError(err)
 	}
 
 	if err := v.fs.Mount(config.Dev(), config.MountPoint(v.Root)); err != nil {
+		log15.Error("Error in Mount")
 		return buildReponseError(err)
 	}
 
